@@ -24,9 +24,13 @@ namespace Web.Pages.Vehiculos
             var solicitud = new HttpRequestMessage(HttpMethod.Get, endpoint);
             var respuesta = await cliente.SendAsync(solicitud);
             respuesta.EnsureSuccessStatusCode();
-            var resultado = await respuesta.Content.ReadAsStringAsync();
-            var opciones = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            vehiculos = JsonSerializer.Deserialize<List<VehiculoResponse>>(resultado, opciones);
+            if(respuesta.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var resultado = await respuesta.Content.ReadAsStringAsync();
+                var opciones = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                vehiculos = JsonSerializer.Deserialize<List<VehiculoResponse>>(resultado, opciones);
+            }
+
         }
     }
 }
